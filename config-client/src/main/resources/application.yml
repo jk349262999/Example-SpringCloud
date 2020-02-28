@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: config-git
+server:
+  port: 13000
+#  将 /actuator/refresh 这个 Endpoint 暴露出来
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh

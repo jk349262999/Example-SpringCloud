@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: eureka-consumer-feign-hystrix
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+server:
+  port: 9003
+feign:
+  hystrix:
+    enabled: true
+#这个是用来暴露 endpoints 的。由于 endpoints 中会包含很多敏感信息，除了 health 和 info 两个支持 web 访问外，其他的默认不支持 web 访问
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream

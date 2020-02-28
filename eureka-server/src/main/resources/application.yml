@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: eureka-server
+server:
+  port: 7000
+eureka:
+  instance:
+    hostname: localhost
+    lease-renewal-interval-in-seconds: 1 # 单机时关闭eureka 保护模式,避免调试时由保护模式引起的服务不能实时监听
+#  server:
+#    enable-self-preservation: false
+  client:
+    # 表示是否将自己注册到 Eureka Server，默认为 true
+    register-with-eureka: false
+    # 表示是否从 Eureka Server 获取注册信息，默认为 true
+    fetch-registry: false
+    service-url:
+      # 设置与 Eureka Server 交互的地址，查询服务和注册服务都需要依赖这个地址。默认是 http://localhost:8761/eureka ；多个地址可使用英文逗号（,）分隔。
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
