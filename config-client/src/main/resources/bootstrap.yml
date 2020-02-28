@@ -1,9 +1,17 @@
 spring:
   cloud:
     config:
-      uri: http://localhost:12000 # 配置中心的具体地址，即 config-server
-      name: config-client # 对应 {application} 部分
-      profile: dev # 对应 {profile} 部分
-      label: master # 对应 {label} 部分，即 Git 的分支。如果配置中心使用的是本地存储，则该参数无用
+#      uri: http://localhost:12000 # 配置中心的具体地址，即 config-server,通过注册中心进行调用
+      name: config-client
+      profile: dev
+      label: master
+      discovery:
+        enabled: true # 开启 Config 服务发现支持
+        service-id: config-server # 指定 Server 端的 name, 也就是 Server 端 spring.application.name 的值
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+
 #上面这些与 Spring Cloud Config 相关的属性必须配置在 bootstrap.yml 中，config 部分内容才能被正确加载。
 #因为 config 的相关配置会先于 application.yml，而 bootstrap.yml 的加载也是先于 application.ym

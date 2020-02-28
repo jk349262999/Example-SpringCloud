@@ -23,7 +23,7 @@ public class EurekaConsumerApplication {
     }
 
     /**
-     *  LoadBalancerClient方式需引用
+     *  LoadBalancer方式需引用
      * @return
      */
     @Bean
