@@ -6,7 +6,7 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
  * @ClassName: ConfigServerApplication
- * @Author: Jason
+ * @author: Jason
  * @Date: 2020/2/28 23:01
  * @Description: TODO  启动类
  */

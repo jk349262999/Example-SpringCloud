@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @ClassName: ConfigClientApplication
- * @Author: Jason
+ * @author: Jason
  * @Date: 2020/2/29 00:05
  * @Description: TODO
  */

@@ -2,8 +2,6 @@ package cn.jason.eurekaconsumer.ribbon;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @ClassName: RibbonHelloController
- * @Author: Jason
+ * @author: Jason
  * @Date: 2020/2/19 21:04
  * @Description: TODO 使用Spring Cloud提供的负载均衡器（Ribbon）客户端接口来实现服务的消费
  */
@@ -21,8 +19,9 @@ import org.springframework.web.client.RestTemplate;
 public class RibbonHelloController {
 
 //    @Resource(name="RibbonRestTemplate")
+
     @Autowired
-    @Qualifier("RibbonRestTemplate")
+    @Qualifier("ribbonRestTemplate")
     private RestTemplate restTemplate;
 
     @GetMapping("/")

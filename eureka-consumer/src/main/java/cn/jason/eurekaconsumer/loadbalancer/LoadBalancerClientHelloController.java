@@ -1,4 +1,4 @@
-package cn.jason.eurekaconsumer.loadBalancer;
+package cn.jason.eurekaconsumer.loadbalancer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @ClassName: LoadBalancerClientHelloController
- * @Author: Jason
+ * @author: Jason
  * @Date: 2020/2/19 21:04
  * @Description: TODO 使用Spring Cloud提供的负载均衡器（LoadBalancerClient）客户端接口来实现服务的消费
  */
@@ -24,8 +24,9 @@ public class LoadBalancerClientHelloController {
     private LoadBalancerClient client;
 
 //    @Resource(name="LBCRestTemplate")
+
     @Autowired
-    @Qualifier("LBCRestTemplate")
+    @Qualifier("lbcRestTemplate")
     private RestTemplate restTemplate;
 
     @GetMapping("/")

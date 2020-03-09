@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @ClassName: EurekaProducerApplication
- * @Author: Jason
+ * @author: Jason
  * @Date: 2020/2/19 19:12
  * @Description: TODO
  */

@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * @ClassName: HelloController
- * @Author: Jason
+ * @author: Jason
  * @Date: 2020/2/19 19:13
  * @Description: TODO
  */
@@ -18,7 +18,9 @@ import java.util.Date;
 @RequestMapping("/hello")
 public class HelloController {
 
-    // 集群使用判断子服务
+    /**
+     * 集群使用判断子服务
+     */
     @Value("${config.producer.instance:0}")
     private int instance;
 

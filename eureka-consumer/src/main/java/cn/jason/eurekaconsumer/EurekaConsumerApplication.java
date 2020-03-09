@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @ClassName: EurekaProducerApplication
- * @Author: Jason
+ * @author: Jason
  * @Date: 2020/2/19 19:12
  * @Description: TODO
  */
@@ -27,7 +27,7 @@ public class EurekaConsumerApplication {
      * @return
      */
     @Bean
-    public RestTemplate LBCRestTemplate() {
+    public RestTemplate lbcRestTemplate() {
         return new RestTemplate();
     }
 
@@ -37,7 +37,7 @@ public class EurekaConsumerApplication {
      */
     @LoadBalanced
     @Bean
-    public RestTemplate RibbonRestTemplate() {
+    public RestTemplate ribbonRestTemplate() {
         return new RestTemplate();
     }
 

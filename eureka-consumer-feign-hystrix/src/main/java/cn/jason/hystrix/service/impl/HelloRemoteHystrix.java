@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @ClassName: HelloRemoteHystrix
- * @Author: Jason
+ * @author: Jason
  * @Date: 2020/2/27 03:27
  * @Description: TODO
  */
