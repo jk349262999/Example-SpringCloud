@@ -1,3 +1,7 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
 spring:
   cloud:
     config:
@@ -8,10 +12,6 @@ spring:
       discovery:
         enabled: true # 开启 Config 服务发现支持
         service-id: config-server # 指定 Server 端的 name, 也就是 Server 端 spring.application.name 的值
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:7000/eureka/
 
 #上面这些与 Spring Cloud Config 相关的属性必须配置在 bootstrap.yml 中，config 部分内容才能被正确加载。
 #因为 config 的相关配置会先于 application.yml，而 bootstrap.yml 的加载也是先于 application.ym

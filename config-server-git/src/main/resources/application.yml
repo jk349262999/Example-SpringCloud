@@ -16,12 +16,17 @@ server:
 
 #仓库中的配置文件会被转换成 Web 接口，访问可以参照以下的规则：
 # /{application}/{profile}[/{label}]
-#  /{application}-{profile}.yml
-#  /{label}/{application}-{profile}.yml
-#  /{application}-{profile}.properties
-#  /{label}/{application}-{profile}.properties
-#  上面的 URL 会映射 {application}-{profile}.yml 对应的配置文件，  其中 {label} 对应 Git 上不同的分支，默认为 master。
-#  以 config-client-dev.yml 为例子，它的 application 是 config-client，profile 是 dev。
+# /{application}-{profile}.yml
+# /{label}/{application}-{profile}.yml
+# /{application}-{profile}.properties
+# /{label}/{application}-{profile}.properties
+# 上面的 URL 会映射 {application}-{profile}.yml 对应的配置文件
+
+# 名词解释，以config-client-dev.yml 为例子
+# {application}是项目文件名称最后一个-之前的词语，对应config-client
+# {profile}是 Git 上不同的分支，对应为 dev。
+# {label}是 Git 上不同的分支，对应为 master。
+
 #Spring Cloud Config 也提供本地存储配置的方式。
 #我们只需要设置属性 spring.profiles.active=native，Config Server 会默认从应用的 src/main/resource 目录下检索配置文件。
 #也可以通过 spring.cloud.config.server.native.searchLocations=file:E:/properties/ 属性来指定配置文件的位置
