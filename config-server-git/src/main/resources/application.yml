@@ -4,7 +4,7 @@ eureka:
       defaultZone: http://localhost:7000/eureka/
 spring:
   application:
-    name: config-server
+    name: config-server-git
   cloud:
     config:
       server:

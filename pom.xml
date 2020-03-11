@@ -27,8 +27,10 @@
         <module>eureka-consumer-feign-hystrix</module>
         <module>hystrix-dashboard</module>
         <module>config-server-git</module>
-        <module>config-client</module>
+        <module>config-client-git</module>
         <module>config-server-bus</module>
+        <module>config-client-bus</module>
+        <module>gateway-zuul</module>
     </modules>
 
     <properties>

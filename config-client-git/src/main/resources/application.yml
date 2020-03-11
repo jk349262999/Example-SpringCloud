@@ -1,6 +1,6 @@
 spring:
   application:
-    name: config-git
+    name: config-client-git
 server:
   port: 13000
 #  将 /actuator/refresh 这个 Endpoint 暴露出来

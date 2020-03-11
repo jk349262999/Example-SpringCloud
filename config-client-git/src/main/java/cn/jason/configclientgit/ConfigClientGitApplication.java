@@ -1,4 +1,4 @@
-package cn.jason.configclient;
+package cn.jason.configclientgit;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Description: TODO
  */
 @SpringBootApplication
-public class ConfigClientApplication {
+public class ConfigClientGitApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ConfigClientApplication.class, args);
+        SpringApplication.run(ConfigClientGitApplication.class, args);
     }
 }

@@ -22,6 +22,7 @@
 > 使用feign加入hystrix<br/>
 > 通过服务降级、资源隔离、断路器方式来防止服务不可用
 - [eureka-consumer-feign-hystrix](eureka-consumer-feign-hystrix)
+- 服务降级未使用
 ---
 ### Hystrix 监控面板
 > 只测试了单节点监控，集群需要加入Turbine，未测试
@@ -36,11 +37,31 @@
 - ` java -jar target/config-server-git-0.0.1-SNAPSHOT.jar --server.port=12001`
 ---
 ### config-client 配置中心客户端（Git 版与动态刷新）
-- [config-client](config-client)
+- [config-client](config-client-git)
 - 构建了 config-client，来获取 Git 中的配置信息
 - 在 config-client 中开启了 Refresh，动态刷新配置信息
 ---
-
+### config-server-bus配置中心（bus动态刷新）
+- [config-server-bus](config-server-bus)
+- 此实例集成配置中心、git远程资源库、bus
+- 通过刷新来控制bus进行消息群体推送
+- 可集群启动
+- 刷新配置命令
+    - **整体**刷新命令`curl -X POST http://localhost:13000/actuator/bus-refresh/`
+    - **局部**刷新命令`curl -X POST http://localhost:13000/actuator/bus-refresh/{destination}`
+    - > destination 参数来定位要刷新的应用程序,例如/actuator/bus-refresh/config-client-bus:13000,如果要刷新特定的微服务`config-client-bus:**`
+---
+### config-client-bus配置中心（bus动态刷新）
+- [config-client-bus](config-client-bus)
+- 此实例集成配置中心、bus
+- 可集群
+---
+### gateway-zuul网关(Zuul)
+- [gateway-zuul](gateway-zuul)
+- 服务默认转发规则:
+  - 通过服务ID转发,转发到 producer 服务的请求规则为：`/producer/**`,转发到 consumer 服务的请求规则为：`/consumer/**`
+  - <http://localhost:9000/FeignHello/?name=jason>转换为<http://localhost:14000/eureka-consumer/FeignHello/?name=jason>
+- 也可以手动配置路由转发规则
 ---
 ## 教程
 ### 1. 服务提供与调用 Eureka1
@@ -74,20 +95,37 @@
     4. 在步骤2的界面上输入<http://localhost:9003/actuator/hystrix.stream>，点击Monitor Stream
     5. 可以通过手动停止生产者进行测试
 
-### 3. 配置中心（Git 版与动态刷新)
-- 启动
-  1. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
-  2. 启动配置中心[config-server-git 配置中心（Git 版与动态刷新）](#config-server-git-配置中心git-版与动态刷新)
-  3. 查看是否读取到数据，访问<http://localhost:12000/config-client/dev/master>
-  4. 启动客户端来读取数据[config-client 配置中心客户端（Git 版与动态刷新）](#config-client-配置中心客户端git-版与动态刷新)
-  5. 访问<http://localhost:13000/info>来查看数据
-  6. 当数据刷新后手动刷新：post执行 /actuator/refresh 刷新变量值`curl -X POST http://localhost:13000/actuator/refresh`
-  7. 需要高可用的话，启动多个配置中心就可以了，代码已经支持
+### 3. 配置中心（Git 版与动态刷新、bus动态刷新)
+- 低配版
+    1. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
+    2. 启动配置中心 [config-server-git 配置中心（Git 版与动态刷新）](#config-server-git-配置中心git-版与动态刷新)
+    3. 查看是否读取到数据，访问<http://localhost:12000/config-client/dev/master>
+    4. 启动客户端来读取数据[config-client 配置中心客户端（Git 版与动态刷新）](#config-client-配置中心客户端git-版与动态刷新)
+    5. 访问<http://localhost:13000/info>来查看数据
+    6. 修改git仓库文件config-client-dev的neo的value、然后手动刷新：post执行 /actuator/refresh 刷新变量值`curl -X POST http://localhost:13000/actuator/refresh`
+    7. 需要高可用的话，启动多个配置中心服务端就可以了，代码已经支持
+- 加入bus
+    1. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
+    2. 启动配置中心 [config-server-bus配置中心（bus动态刷新）](#config-server-bus配置中心bus动态刷新)
+    3. 验证数据<http://localhost:12000/config-client/dev>
+    4. 集群启动客户端[config-client-bus配置中心（bus动态刷新）](#config-client-bus配置中心bus动态刷新)
+    5. 验证数据<http://localhost:13000/info>,<http://localhost:13001/info>
+    6. 修改git仓库文件config-client-dev的neo的value，然后手动整体刷新`curl -X POST http://localhost:12000/actuator/refresh`
+    7. 查看数据，发现两个客户端数据都改变了
+    8. 需要验证局部刷新直接看[config-server-bus配置中心（bus动态刷新）](#config-server-bus配置中心bus动态刷新)
 
-### 4. 配置中心(消息总线)
-### 6. 服务提供与调用 Eureka1
-### 7. 服务提供与调用 Eureka1
-### 8. 服务提供与调用 Eureka1
-### 9. 服务提供与调用 Eureka1
+### 4. 服务网关 Zuul
+- 路由(Router)、过滤器(Filter)
+    1. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
+    2. 启动生产者 [eureka-producer 生产者](#eureka-producer-生产者)
+    3. 启动消费者 [eureka-consumer 消费者](#eureka-consumer-消费者)
+    4. 启动网关[gateway-zuul网关(Zuul)](#gateway-zuul网关zuul)
+    5. 通过网关访问eureka-consumer的服务,<http://localhost:14000/eureka-consumer/FeignHello/?name=jason>
+    6. 返回token is empty,证明过滤器已工作,加入token参数，访问<http://localhost:14000/eureka-consumer/FeignHello/?name=jason&token=xx>
+    7. 测试正常
+
+
+### 7. xxxx
+
 
 

@@ -1,0 +1,1 @@
+![配置中心使用机制](https://img-blog.csdnimg.cn/20190601005920376.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9mb3JlenAuYmxvZy5jc2RuLm5ldA==,size_16,color_FFFFFF,t_70)
