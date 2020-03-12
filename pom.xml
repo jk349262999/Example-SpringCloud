@@ -31,6 +31,7 @@
         <module>config-server-bus</module>
         <module>config-client-bus</module>
         <module>gateway-zuul</module>
+        <module>sleuth</module>
     </modules>
 
     <properties>

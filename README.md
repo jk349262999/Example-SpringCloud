@@ -63,8 +63,31 @@
   - <http://localhost:9000/FeignHello/?name=jason>转换为<http://localhost:14000/eureka-consumer/FeignHello/?name=jason>
 - 也可以手动配置路由转发规则
 ---
+### 分布式链路跟踪 Sleuth与Zipkin
+- [sleuth](sleuth)
+- Sleuth
+  - 为服务之间调用提供链路追踪,然后存储到Zipkin
+  - 提供内容
+    - 耗时分析：通过 Sleuth 可以很方便的了解到每个采样请求的耗时，从而分析出哪些服务调用比较耗时
+    - 可视化错误：对于程序未捕捉的异常，可以通过集成 Zipkin 服务界面上看到
+    - 链路优化：对于调用比较频繁的服务，可以针对这些服务实施一些优化措施
+- Zipkin
+  - 提供存储、展示数据功能
+  - 安装方式
+      - java8以上
+        - `curl -sSL https://zipkin.io/quickstart.sh | bash -s`
+        - `java -jar zipkin.jar`
+      - docker
+        - docker run -d -p 9411:9411 openzipkin/zipkin
+  - 访问<http://localhost:9411>查看监控平台
+  - 存储方式使用了In-Memory
+
+
+---
+---
+
 ## 教程
-### 1. 服务提供与调用 Eureka1
+### 1. 服务提供与调用 Eureka
 > 集成了
 - 流程
     1. 启动注册中心
@@ -124,8 +147,11 @@
     6. 返回token is empty,证明过滤器已工作,加入token参数，访问<http://localhost:14000/eureka-consumer/FeignHello/?name=jason&token=xx>
     7. 测试正常
 
-
-### 7. xxxx
-
-
+### 5. 链路追踪 sleuth
+- 测试
+    1. 下载并启动zipkin服务端,命令见[分布式链路跟踪 Sleuth与Zipkin](#分布式链路跟踪-sleuth与zipkin)
+    2. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
+    3. 启动[trace-a](sleuth/trace-a),[trace-b](sleuth/trace-b)
+    4. 访问<http://localhost:15001/trace-a>
+    5. 访问<http://localhost:9411/zipkin>查看调用过程
 
