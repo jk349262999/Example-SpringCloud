@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.jason</groupId>
-    <artifactId>SpringCloud-Finchley</artifactId>
+    <artifactId>SpringCloud-Example</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>SpringCloud-Finchley</name>
+    <name>SpringCloud-Example</name>
     <description>Demo project for Spring Cloud Finchley</description>
 <!--    父类对子类的支持，防止子模块打包失败-->
     <packaging>pom</packaging>
@@ -32,6 +32,7 @@
         <module>config-client-bus</module>
         <module>gateway-zuul</module>
         <module>sleuth</module>
+        <module>gateway</module>
     </modules>
 
     <properties>

@@ -1,5 +1,5 @@
 # SpringCloudStudy
-> SpringCloud-Finchley研究测试
+> SpringCloud-Example研究测试
 ## 模块解释
 ### eureka-server 注册中心
 - [eureka-server](eureka-server)
