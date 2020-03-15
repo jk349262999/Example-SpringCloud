@@ -23,7 +23,12 @@ public class FeignHystrixHelloController {
     @Autowired
     HelloRemote helloRemote;
 
-    @GetMapping("/")
+    @GetMapping("/gatewayTest")
+    public String gatewayTest(@RequestParam String a,@RequestParam String b) {
+        return helloRemote.hello(a+";"+b+";" + "!《FeignHystrix》");
+    }
+
+    @GetMapping("/index")
     public String index(@RequestParam String name) {
         return helloRemote.hello(name + "!《FeignHystrix》");
     }

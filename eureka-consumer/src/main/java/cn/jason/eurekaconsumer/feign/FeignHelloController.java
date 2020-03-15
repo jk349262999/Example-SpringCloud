@@ -20,8 +20,8 @@ public class FeignHelloController {
     @Autowired
     HelloRemote helloRemote;
 
-    @GetMapping("/")
-    public String index(@RequestParam String name) {
+    @GetMapping("/index")
+    public String index(@RequestParam String name) throws InterruptedException {
         return helloRemote.hello(name + "!《Feign》");
     }
 }

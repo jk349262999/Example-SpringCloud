@@ -60,7 +60,7 @@
 - [gateway-zuul](gateway-zuul)
 - 服务默认转发规则:
   - 通过服务ID转发,转发到 producer 服务的请求规则为：`/producer/**`,转发到 consumer 服务的请求规则为：`/consumer/**`
-  - <http://localhost:9000/FeignHello/?name=jason>转换为<http://localhost:14000/eureka-consumer/FeignHello/?name=jason>
+  - <http://localhost:9000/FeignHello/index?name=jason>转换为<http://localhost:14000/eureka-consumer/FeignHello/index?name=jason>
 - 也可以手动配置路由转发规则
 ---
 ### 分布式链路跟踪 Sleuth与Zipkin
@@ -81,7 +81,13 @@
         - docker run -d -p 9411:9411 openzipkin/zipkin
   - 访问<http://localhost:9411>查看监控平台
   - 存储方式使用了In-Memory
-
+---
+### 服务网关 Gateway
+- [gateway](gateway)
+- 路由，配置见[README](gateway/README.md) > routes配置
+- 过滤
+- 限流
+- 集成Hystrix
 
 ---
 ---
@@ -97,18 +103,18 @@
     1. 集群启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
     2. 集群启动生产者 [eureka-producer 生产者](#eureka-producer-生产者)
     3. 集群启动消费者 [eureka-consumer 消费者](#eureka-consumer-消费者)
-    4. 访问消费者-LoadBalancer <http://localhost:9000/LBCHello/?name=jason>
-    5. 访问消费者-Ribbon <http://localhost:9000/RibbonHello/?name=jason>
-    6. 访问消费者-LoadBalancer <http://localhost:9000/FeignHello/?name=jason>
+    4. 访问消费者-LoadBalancer <http://localhost:9000/LBCHello/index?name=jason>
+    5. 访问消费者-Ribbon <http://localhost:9000/RibbonHello/index?name=jason>
+    6. 访问消费者-LoadBalancer <http://localhost:9000/FeignHello/index?name=jason>
 
 ### 2. 服务容错保护 Hystrix
 - 启动
     1. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
     2. 启动生产者 [eureka-producer 生产者](#eureka-producer-生产者)
     3. 启动Hystrix [hystrix 服务容错保护](#hystrix-服务容错保护)
-    4. 访问 <http://localhost:9003/FeignHystrixHello/?name=jason>,确认正常
-    5. 手动停止eureka-producer，访问<http://localhost:9003/FeignHystrixHello/?name=jason>，确认已经熔断
-    6. 启动eureka-producer，再次访问<http://localhost:9003/FeignHystrixHello/?name=jason>，发现正常
+    4. 访问 <http://localhost:9003/FeignHystrixHello/index?name=jason>,确认正常
+    5. 手动停止eureka-producer，访问<http://localhost:9003/FeignHystrixHello/index?name=jason>，确认已经熔断
+    6. 启动eureka-producer，再次访问<http://localhost:9003/FeignHystrixHello/index?name=jason>，发现正常
 - 总结
     1. 通过使用 Hystrix，我们能方便的防止雪崩效应，同时使系统具有自动降级和自动恢复服务的效果。
 - 监控面板
@@ -143,8 +149,8 @@
     2. 启动生产者 [eureka-producer 生产者](#eureka-producer-生产者)
     3. 启动消费者 [eureka-consumer 消费者](#eureka-consumer-消费者)
     4. 启动网关[gateway-zuul网关(Zuul)](#gateway-zuul网关zuul)
-    5. 通过网关访问eureka-consumer的服务,<http://localhost:14000/eureka-consumer/FeignHello/?name=jason>
-    6. 返回token is empty,证明过滤器已工作,加入token参数，访问<http://localhost:14000/eureka-consumer/FeignHello/?name=jason&token=xx>
+    5. 通过网关访问eureka-consumer的服务,<http://localhost:14000/eureka-consumer/FeignHello/index?name=jason>
+    6. 返回token is empty,证明过滤器已工作,加入token参数，访问<http://localhost:14000/eureka-consumer/FeignHello/index?name=jason&token=xx>
     7. 测试正常
 
 ### 5. 链路追踪 sleuth

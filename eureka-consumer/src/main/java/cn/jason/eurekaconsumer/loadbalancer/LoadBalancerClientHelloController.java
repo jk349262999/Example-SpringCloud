@@ -29,11 +29,11 @@ public class LoadBalancerClientHelloController {
     @Qualifier("lbcRestTemplate")
     private RestTemplate restTemplate;
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public String hello(@RequestParam String name) {
         name += "!《LBC》";
         ServiceInstance instance = client.choose("eureka-producer");
-        String url = "http://" + instance.getHost() + ":" + instance.getPort() + "/hello/?name=" + name;
+        String url = "http://" + instance.getHost() + ":" + instance.getPort() + "/hello/index?name=" + name;
         return restTemplate.getForObject(url, String.class);
     }
 
