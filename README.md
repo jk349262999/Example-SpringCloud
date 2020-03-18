@@ -161,3 +161,37 @@
     4. 访问<http://localhost:15001/trace-a>
     5. 访问<http://localhost:9411/zipkin>查看调用过程
 
+### 6. 网关gateway
+- 路由
+    1. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
+    2. 启动生产者 [eureka-producer 生产者](#eureka-producer-生产者)
+    3. 启动消费者 [eureka-consumer 消费者](#eureka-consumer-消费者)
+    4. 启动网关[服务网关 Gateway](#服务网关-gateway)
+    5. before_route `curl -H 'X-Request-Id:1' localhost:14100`
+    6. header_route `curl -H 'X-Request-Id:1' localhost:14100`
+    7. cookie_route `curl -H 'Cookie:name=forezp' localhost:14100`
+    8. path_router <http://localhost:14100/path_route/s?wd=path_route>
+    9. 内部服务路由 <http://localhost:14100/to_client/FeignHello/index?name=jason>
+    10. Java 的流式 API 进行路由的定义<http://localhost:14100/java/customer/FeignHello/index?name=jason>
+    11. 测试框架自动生成的路由 <http://localhost:14100/eureka-consumer/FeignHello/index?name=jason&token=1>
+- 过滤
+    1. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
+    2. 启动生产者 [eureka-producer 生产者](#eureka-producer-生产者)
+    3. 启动消费者 [eureka-consumer 消费者](#eureka-consumer-消费者)
+    4. 启动网关[服务网关 Gateway](#服务网关-gateway)
+    5. 自定义局部过滤器
+        - [TokenFilter.java](gateway/src/main/java/cn/jason/gateway/filter/TokenFilter.java)
+        - <http://localhost:14100/fluent/customer/FeignHello/index?name=jason&token=1>
+    6. 自定义全局过滤器
+        - [TimeCostFilter.java](gateway/src/main/java/cn/jason/gateway/filter/TimeCostFilter.java)
+        - 访问任意地址 <http://localhost:14100/path_route/s?wd=path_route> 查看后台输出
+    7. 过滤器工厂
+        - [PrintParamsGatewayFilterFactory.java](gateway/src/main/java/cn/jason/gateway/filter/PrintParamsGatewayFilterFactory.java)
+        - 访问任意地址 <http://localhost:14100/path_route/s?wd=path_route> 查看后台输出
+- 限流
+    1. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
+    2. 启动生产者 [eureka-producer 生产者](#eureka-producer-生产者)
+    3. 启动消费者 [eureka-consumer 消费者](#eureka-consumer-消费者)
+    4. 启动网关[服务网关 Gateway](#服务网关-gateway)
+    5. 自定义限流 运行[CustomerRouteTest.java](gateway/src/test/java/cn/jason/gateway/router/CustomerRouteTest.java)，查看后台输出
+    6. 架构自带限流 访问并不停刷新查看后台输出<http://localhost:14100/limit/customer/FeignHello/index?name=jason&token=1>
