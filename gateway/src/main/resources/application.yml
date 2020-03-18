@@ -1,0 +1,97 @@
+server:
+  port: 14100
+spring:
+  application:
+    name: gateway
+  profiles:
+    # 指定了程序的spring的启动文件为after_route文件
+    active: gateway
+  redis:
+    host: localhost
+    port: 16379
+    database: 1
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          #          # 是否与服务注册于发现组件进行结合，通过 serviceId 转发到具体的服务实例。默认为 false，
+          #          # 设为 true 便开启通过服务中心的自动根据 serviceId 创建路由的功能
+          #            类似下面
+          #          - id: CompositeDiscoveryClient_CONSUMER
+          #            uri: lb://EUREKA-CONSUMER-FEIGN-HYSTRIX
+          #            order: 0
+          #            predicates:
+          #              - Path=/EUREKA-CONSUMER-FEIGN-HYSTRIX/**
+          #            filters:
+          #              - RewritePath=/EUREKA-CONSUMER-FEIGN-HYSTRIX/(?<segment>.*), /$\{segment}
+          enabled: true
+          #          开启了lowerCaseServiceId,则只能用小写,不能识别大写,如果不开启,只能识别大写
+          lowerCaseServiceId: true
+      default-filters:
+        - PrintParams=true
+#        - name: RequestRateLimiter
+#          args:
+#            # 用于限流的键的解析器的 Bean 对象名字
+#            key-resolver: '#{@remoteAddrKeyResolver}'
+#            # 令牌桶每秒填充平均速率
+#            redis-rate-limiter.replenishRate: 1
+#            # 令牌桶容量
+#            redis-rate-limiter.burstCapacity: 5
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+---
+spring:
+  # 在此配置文件中通过spring.profiles来配置文件名，和spring.profiles.active一致
+  profiles: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: before_route
+          # 将请求路由到哪里
+          uri: https://www.baidu.com/s?wd=after_route
+          # 这个Before就是指定了它的Gateway web handler类为AfterRoutePredicateFactory，同理，其他类型的predicate也遵循这个规则
+          predicates:
+            - Before=2020-03-14T18:45:01.171+08:00[Asia/Shanghai]
+        - id: header_route
+          uri: https://www.baidu.com/s?wd=header_route
+          # 请求的Header中有X-Request-Id的header名，且header值为数字时，请求会被路由到配置的 uri
+          # curl -H 'X-Request-Id:1' localhost:14100
+          predicates:
+            - Header=X-Request-Id, \d+
+        - id: cookie_route
+          # 请求带有cookie名为name, cookie值为forezp 的请求将都会转发到uri
+          # curl -H 'Cookie:name=forezp' localhost:14100
+          uri: https://www.baidu.com/s?wd=cookie_route
+          predicates:
+            - Cookie=name, forezp
+        - id: path_route
+          uri: https://www.baidu.com/s?wd=path_route
+          predicates:
+              - Path=/path_route/**
+        - id: service_customer
+          uri: lb://eureka-consumer
+          order: 0
+          predicates:
+            - Path=/to_client/**
+          filters:
+            - StripPrefix=1 # 去除请求地址中的to_client
+        - id: limit_customer
+          uri: lb://eureka-consumer
+          order: 0
+          predicates:
+            - Path=/limit/customer/**
+          filters:
+            - StripPrefix=2
+            - name: RequestRateLimiter
+              args:
+                # 用于限流的键的解析器的 Bean 对象名字
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                # 令牌桶每秒填充平均速率
+                redis-rate-limiter.replenishRate: 1
+                # 令牌桶容量
+                redis-rate-limiter.burstCapacity: 5
