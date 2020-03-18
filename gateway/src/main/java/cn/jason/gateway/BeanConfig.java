@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 public class BeanConfig {
 
     @Bean
-    public TimeCostFilter tokenFilter(){
+    public TimeCostFilter timeCostFilter(){
         return new TimeCostFilter();
     }
 
