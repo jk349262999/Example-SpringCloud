@@ -26,6 +26,12 @@ public class CustomerRoute {
     public RouteLocator customerRouteLocator(RouteLocatorBuilder builder) {
         // @formatter:off
         return builder.routes()
+                .route(r -> r.path("/java/customer/**")
+                        .filters(f -> f.stripPrefix(2))
+                        .uri("lb://eureka-consumer")
+                        .order(0)
+                        .id("fluent_customer_service")
+                )
                 .route(r -> r.path("/fluent/customer/**")
                         .filters(f -> f.stripPrefix(2)
                                 .filter(new TokenFilter())

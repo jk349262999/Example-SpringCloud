@@ -4,7 +4,7 @@ spring:
   application:
     name: gateway
   profiles:
-    # 指定了程序的spring的启动文件为after_route文件
+    # 指定了程序的spring的启动文件为gateway文件
     active: gateway
   redis:
     host: localhost
@@ -53,26 +53,30 @@ spring:
       routes:
         - id: before_route
           # 将请求路由到哪里
-          uri: https://www.baidu.com/s?wd=after_route
+          uri: https://www.baidu.com
           # 这个Before就是指定了它的Gateway web handler类为AfterRoutePredicateFactory，同理，其他类型的predicate也遵循这个规则
           predicates:
             - Before=2020-03-14T18:45:01.171+08:00[Asia/Shanghai]
+        # 请求的Header中有X-Request-Id的header名，且header值为数字时，请求会被路由到配置的 uri
+        # curl -H 'X-Request-Id:1' localhost:14100
         - id: header_route
-          uri: https://www.baidu.com/s?wd=header_route
-          # 请求的Header中有X-Request-Id的header名，且header值为数字时，请求会被路由到配置的 uri
-          # curl -H 'X-Request-Id:1' localhost:14100
+          uri: https://www.baidu.com
           predicates:
             - Header=X-Request-Id, \d+
+        # 请求带有cookie名为name, cookie值为forezp 的请求将都会转发到uri
+        # curl -H 'Cookie:name=forezp' localhost:14100
         - id: cookie_route
-          # 请求带有cookie名为name, cookie值为forezp 的请求将都会转发到uri
-          # curl -H 'Cookie:name=forezp' localhost:14100
-          uri: https://www.baidu.com/s?wd=cookie_route
+          uri: https://www.baidu.com
           predicates:
             - Cookie=name, forezp
+        # 访问 http://localhost:14100/path_route/s?wd=path_route
         - id: path_route
-          uri: https://www.baidu.com/s?wd=path_route
+          uri: https://www.baidu.com
           predicates:
-              - Path=/path_route/**
+            - Path=/path_route/**
+          filters:
+            - RewritePath=/path_route/(?<segment>.*), /$\{segment}
+        # http://localhost:14100/to_client/FeignHello/index?name=jason
         - id: service_customer
           uri: lb://eureka-consumer
           order: 0
@@ -80,6 +84,7 @@ spring:
             - Path=/to_client/**
           filters:
             - StripPrefix=1 # 去除请求地址中的to_client
+        # http://localhost:14100/limit/customer/FeignHello/index?name=jason
         - id: limit_customer
           uri: lb://eureka-consumer
           order: 0

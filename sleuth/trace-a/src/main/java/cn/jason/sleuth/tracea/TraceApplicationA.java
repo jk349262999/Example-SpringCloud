@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SpringBootApplication
 @EnableFeignClients
-public class Application {
+public class TraceApplicationA {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(TraceApplicationA.class, args);
     }
 
 

@@ -94,18 +94,16 @@
 
 ## 教程
 ### 1. 服务提供与调用 Eureka
-> 集成了
-- 流程
-    1. 启动注册中心
-    2. 服务提供者生产服务并注册到服务中心中
-    3. 消费者从服务中心中获取服务并执行
-- 启动
-    1. 集群启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
-    2. 集群启动生产者 [eureka-producer 生产者](#eureka-producer-生产者)
-    3. 集群启动消费者 [eureka-consumer 消费者](#eureka-consumer-消费者)
-    4. 访问消费者-LoadBalancer <http://localhost:9000/LBCHello/index?name=jason>
-    5. 访问消费者-Ribbon <http://localhost:9000/RibbonHello/index?name=jason>
-    6. 访问消费者-LoadBalancer <http://localhost:9000/FeignHello/index?name=jason>
+1. 配置host,为了注册中心集群
+> 127.0.0.1 peer1<br/>
+> 127.0.0.1 peer2<br/>
+> 127.0.0.1 peer3<br/>
+2. 集群启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
+3. 集群启动生产者 [eureka-producer 生产者](#eureka-producer-生产者),修改配置文件指向集群Eureka
+4. 启动消费者 [eureka-consumer 消费者](#eureka-consumer-消费者),修改配置文件指向集群Eureka
+5. 访问消费者-LoadBalancer <http://localhost:9000/LBCHello/index?name=jason>
+6. 访问消费者-Ribbon <http://localhost:9000/RibbonHello/index?name=jason>
+7. 访问消费者-LoadBalancer <http://localhost:9000/FeignHello/index?name=jason>
 
 ### 2. 服务容错保护 Hystrix
 - 启动
@@ -139,7 +137,7 @@
     3. 验证数据<http://localhost:12000/config-client/dev>
     4. 集群启动客户端[config-client-bus配置中心（bus动态刷新）](#config-client-bus配置中心bus动态刷新)
     5. 验证数据<http://localhost:13000/info>,<http://localhost:13001/info>
-    6. 修改git仓库文件config-client-dev的neo的value，然后手动整体刷新`curl -X POST http://localhost:12000/actuator/refresh`
+    6. 修改git仓库文件config-client-dev的neo的value，然后手动整体刷新`curl -X POST http://localhost:12000/actuator/bus-refresh`
     7. 查看数据，发现两个客户端数据都改变了
     8. 需要验证局部刷新直接看[config-server-bus配置中心（bus动态刷新）](#config-server-bus配置中心bus动态刷新)
 
