@@ -155,7 +155,7 @@
 - 测试
     1. 下载并启动zipkin服务端,命令见[分布式链路跟踪 Sleuth与Zipkin](#分布式链路跟踪-sleuth与zipkin)
     2. 启动注册中心 [eureka-server 注册中心](#eureka-server-注册中心)
-    3. 启动[trace-a](sleuth/trace-a),[trace-b](sleuth/trace-b)
+    3. 启动[trace-b](sleuth/trace-b),[trace-a](sleuth/trace-a)
     4. 访问<http://localhost:15001/trace-a>
     5. 访问<http://localhost:9411/zipkin>查看调用过程
 

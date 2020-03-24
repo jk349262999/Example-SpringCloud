@@ -21,6 +21,6 @@ public class TraceApplicationB {
     @GetMapping("/trace-b")
     public String trace() {
         System.out.println("===call trace-b===");
-        return "Trace";
+        return "I am B";
     }
 }
