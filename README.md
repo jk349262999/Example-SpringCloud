@@ -79,6 +79,8 @@
         - `java -jar zipkin.jar`
       - docker
         - docker run -d -p 9411:9411 openzipkin/zipkin
+      - 直接下载
+        - <https://github.com/jk349262999/files/blob/master/zipkin.jar>  
   - 访问<http://localhost:9411>查看监控平台
   - 存储方式使用了In-Memory
 ---
